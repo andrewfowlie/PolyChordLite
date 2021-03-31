@@ -473,12 +473,21 @@ module nested_sampling_module
     function more_samples_needed(settings,RTI)
         use settings_module,   only: program_settings
         use run_time_module,   only: run_time_info,live_logZ
+        use utils_module,      only: logsumexp,stdout_unit
         implicit none
 
         type(program_settings), intent(in) :: settings
         type(run_time_info), intent(inout) :: RTI
 
         logical :: more_samples_needed
+
+        real(dp) :: logX_geometric
+        real(dp) :: logX_arithmetic
+        real(dp) :: logX_internal
+        logX_internal =  logsumexp(RTI%logXp)
+        logX_geometric = (-1. * RTI%ndead) / SUM(RTI%nlive)
+        logX_arithmetic = RTI%ndead * LOG(1. - 1. / SUM(RTI%nlive))
+        write(stdout_unit, *) 'logX. internal ', logX_internal, '. geometric ', logX_geometric, '. arithmetic ', logX_arithmetic
 
         ! Set it to default to true
         more_samples_needed = .true.
