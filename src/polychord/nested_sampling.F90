@@ -485,8 +485,8 @@ module nested_sampling_module
         real(dp) :: logX_arithmetic
         real(dp) :: logX_internal
         logX_internal =  logsumexp(RTI%logXp)
-        logX_geometric = (-1. * RTI%ndead) / SUM(RTI%nlive)
-        logX_arithmetic = RTI%ndead * LOG(1. - 1. / SUM(RTI%nlive))
+        logX_geometric = (-1d0 * RTI%ndead) / SUM(RTI%nlive)
+        logX_arithmetic = RTI%ndead * LOG(1d0 - 1d0 / (SUM(RTI%nlive) + 1d0))
         write(stdout_unit, *) 'logX. internal ', logX_internal, '. geometric ', logX_geometric, '. arithmetic ', logX_arithmetic
 
         ! Set it to default to true
